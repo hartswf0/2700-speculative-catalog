@@ -71,6 +71,38 @@
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
 
+        /* Filter Section */
+        .filter-section {
+            margin-bottom: 30px;
+        }
+
+        .filter-section h3 {
+            margin-bottom: 10px;
+            color: #ff4d00;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .filter-group select,
+        .filter-group input[type="checkbox"] {
+            padding: 5px;
+            font-size: 14px;
+        }
+
         /* Project Cards */
         .projects-grid {
             display: grid;
@@ -85,6 +117,9 @@
             padding: 20px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .project-card:hover {
@@ -97,6 +132,21 @@
             margin-bottom: 10px;
             border-bottom: 1px solid #d4c4a8;
             padding-bottom: 5px;
+        }
+
+        .tags {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tag {
+            background-color: #ff4d00;
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
         }
 
         /* Modal */
@@ -146,7 +196,32 @@
             margin-bottom: 5px;
         }
 
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .modal-tag {
+            background-color: #ff4d00;
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
         /* Responsive Design */
+        @media (max-width: 1200px) {
+            nav {
+                width: 250px;
+            }
+
+            main {
+                margin-left: 250px;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -161,6 +236,10 @@
                 margin-left: 0;
                 padding: 20px;
             }
+
+            .filters {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -174,6 +253,78 @@
 
     <main>
         <h1>Speculative Projects Gallery</h1>
+
+        <div class="filter-section">
+            <h3>Filters</h3>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="domain-filter">Domain</label>
+                    <select id="domain-filter">
+                        <option value="All">All</option>
+                        <option value="Health">Health</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Education">Education</option>
+                        <option value="Art">Art</option>
+                        <option value="Social">Social</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Mental Health">Mental Health</option>
+                        <option value="Legal">Legal</option>
+                        <option value="Environmental">Environmental</option>
+                        <option value="Lifestyle">Lifestyle</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="focus-filter">Focus</label>
+                    <select id="focus-filter">
+                        <option value="All">All</option>
+                        <option value="AI">AI</option>
+                        <option value="AR">AR</option>
+                        <option value="VR">VR</option>
+                        <option value="Interactive">Interactive</option>
+                        <option value="Music">Music</option>
+                        <option value="Edutainment">Edutainment</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Social Media">Social Media</option>
+                        <option value="Nutrition">Nutrition</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="feasibility-filter">Feasibility</label>
+                    <select id="feasibility-filter">
+                        <option value="All">All</option>
+                        <option value="Probable">Probable</option>
+                        <option value="Plausible">Plausible</option>
+                        <option value="Possible">Possible</option>
+                        <option value="Preposterous">Preposterous</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="technology-filter">Technology</label>
+                    <select id="technology-filter">
+                        <option value="All">All</option>
+                        <option value="AI">AI</option>
+                        <option value="AR">AR</option>
+                        <option value="VR">VR</option>
+                        <option value="Chatbots">Chatbots</option>
+                        <option value="3D Modeling">3D Modeling</option>
+                        <option value="Blockchain">Blockchain</option>
+                        <option value="Interactive Media">Interactive Media</option>
+                        <option value="Music-Based">Music-Based</option>
+                        <option value="Image Transformation">Image Transformation</option>
+                        <option value="Data Integration">Data Integration</option>
+                        <option value="Generative AI">Generative AI</option>
+                        <option value="Interactive Storytelling">Interactive Storytelling</option>
+                        <option value="Augmented Reality">Augmented Reality</option>
+                        <option value="Virtual Reality">Virtual Reality</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Speculative Design">Speculative Design</option>
+                        <option value="Interactive Design">Interactive Design</option>
+                        <option value="Brain Scanning">Brain Scanning</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div id="projects-grid" class="projects-grid">
             <!-- Projects will be dynamically inserted here -->
         </div>
@@ -197,7 +348,11 @@
                 "Logline": "Smart shoes offer independence to the visually impaired, but at the risk of technological vulnerabilities.",
                 "Topic": "Assistive technology advancement for the visually impaired.",
                 "Entities": ["StrideSense shoes", "visually impaired users", "sensors", "mobile app", "potential hackers"],
-                "What_If": "What if smart shoes could guide the visually impaired through any environment but could be hacked to cause harm?"
+                "What_If": "What if smart shoes could guide the visually impaired through any environment but could be hacked to cause harm?",
+                "Domain": "Health",
+                "Focus": "AI",
+                "Feasibility": "Plausible",
+                "Technology": ["AI", "Sensors", "Mobile App"]
             },
             "One Piece Wiki with Chatbot": {
                 "Speculative_World": "A world where AI brings fictional characters to life for interactive fan experiences.",
@@ -205,7 +360,11 @@
                 "Logline": "Fans engage with AI versions of One Piece characters, bridging fiction and reality.",
                 "Topic": "AI in entertainment and fandom interaction.",
                 "Entities": ["AI chatbots", "One Piece characters", "fans", "interactive interface"],
-                "What_If": "What if fans could have natural conversations with AI that perfectly emulate their favorite fictional characters?"
+                "What_If": "What if fans could have natural conversations with AI that perfectly emulate their favorite fictional characters?",
+                "Domain": "Entertainment",
+                "Focus": "Chatbots",
+                "Feasibility": "Probable",
+                "Technology": ["AI", "Chatbots", "Interactive Media"]
             },
             "Dating Sims in 2050": {
                 "Speculative_World": "A 2050 future where AI companions form deep, adaptive relationships with humans.",
@@ -213,7 +372,11 @@
                 "Logline": "An AI dating simulator delves into the complexities of love between humans and evolving AI.",
                 "Topic": "Future of dating and personal relationships with AI.",
                 "Entities": ["AI character Alex", "users", "3D dating environments"],
-                "What_If": "What if AI companions could adapt so seamlessly that they became indistinguishable from human partners?"
+                "What_If": "What if AI companions could adapt so seamlessly that they became indistinguishable from human partners?",
+                "Domain": "Social",
+                "Focus": "AI",
+                "Feasibility": "Plausible",
+                "Technology": ["AI", "3D Modeling", "Interactive Media"]
             },
             "Interactive Narrative on AI's Impact": {
                 "Speculative_World": "A world shaped by AI's influence, where individual choices alter societal outcomes.",
@@ -221,7 +384,11 @@
                 "Logline": "An interactive story where your decisions with AI technology shape the fate of society.",
                 "Topic": "Ethical considerations of AI use and its effects on society.",
                 "Entities": ["Protagonist", "DreamVault App", "society", "AI technologies"],
-                "What_If": "What if your personal engagement with AI could tip the balance between societal harmony and chaos?"
+                "What_If": "What if your personal engagement with AI could tip the balance between societal harmony and chaos?",
+                "Domain": "Technology",
+                "Focus": "Interactive Storytelling",
+                "Feasibility": "Probable",
+                "Technology": ["AI", "Interactive Storytelling", "Web Development"]
             },
             "Interactive Educational Tool with Music-Based Mnemonics": {
                 "Speculative_World": "A future where AI generates personalized educational songs to enhance learning.",
@@ -229,7 +396,11 @@
                 "Logline": "An AI tool transforms learning by turning topics into catchy songs matched to popular tunes.",
                 "Topic": "AI-driven edutainment and music-based learning aids.",
                 "Entities": ["GPT", "users", "popular melodies", "educational content"],
-                "What_If": "What if AI could convert your study material into catchy songs to boost memorization?"
+                "What_If": "What if AI could convert your study material into catchy songs to boost memorization?",
+                "Domain": "Education",
+                "Focus": "Music-Based",
+                "Feasibility": "Possible",
+                "Technology": ["AI", "Music-Based", "Edutainment"]
             },
             "2049 Future Cookbook": {
                 "Speculative_World": "A 2049 society where AI-guided cookbooks and advanced food tech are integrated into daily life.",
@@ -237,7 +408,11 @@
                 "Logline": "An AI-driven interactive cookbook transforms cooking with futuristic foods into a personalized lifestyle experience.",
                 "Topic": "Future food technologies and AI in nutrition.",
                 "Entities": ["AI assistant", "cloned meats", "enhanced plant-based foods", "users"],
-                "What_If": "What if an AI-guided cookbook could personalize your meals using futuristic ingredients and health tracking?"
+                "What_If": "What if an AI-guided cookbook could personalize your meals using futuristic ingredients and health tracking?",
+                "Domain": "Lifestyle",
+                "Focus": "AI",
+                "Feasibility": "Possible",
+                "Technology": ["AI", "Food Technology", "Web Development"]
             },
             "Virtual Gallery of AI Art": {
                 "Speculative_World": "A future where AI-generated art dominates, overshadowing traditional art forms.",
@@ -245,7 +420,11 @@
                 "Logline": "A humorous virtual gallery explores a world where AI art has replaced traditional art.",
                 "Topic": "The impact of AI on the art world and cultural norms.",
                 "Entities": ["AI-generated artworks", "virtual galleries", "society", "artists"],
-                "What_If": "What if generative AI art became the standard, leading to the decline of traditional artistic expression?"
+                "What_If": "What if generative AI art became the standard, leading to the decline of traditional artistic expression?",
+                "Domain": "Art",
+                "Focus": "Generative AI",
+                "Feasibility": "Probable",
+                "Technology": ["AI", "Generative AI", "Web Development"]
             },
             "Futuristic Art Museum Walking Simulator": {
                 "Speculative_World": "A future where art is interactive, responsive, and enhanced by AI within virtual museums.",
@@ -253,7 +432,11 @@
                 "Logline": "Explore a virtual museum where speculative art pieces interact with you, showcasing the future of art.",
                 "Topic": "Interactive and AI-enhanced art in future museums.",
                 "Entities": ["Interactive art", "AI chatbots", "virtual museum", "players"],
-                "What_If": "What if art could change and respond to your emotions and interactions within a virtual museum?"
+                "What_If": "What if art could change and respond to your emotions and interactions within a virtual museum?",
+                "Domain": "Art",
+                "Focus": "Interactive",
+                "Feasibility": "Possible",
+                "Technology": ["AI", "Interactive Design", "3D Modeling", "Virtual Reality"]
             },
             "A Vision into a Solarpunk Future": {
                 "Speculative_World": "A future where architecture embraces solarpunk aesthetics for sustainability.",
@@ -261,7 +444,11 @@
                 "Logline": "An interactive platform reimagines buildings with solarpunk designs, inspiring eco-friendly architecture.",
                 "Topic": "Solarpunk aesthetics and sustainable architectural design.",
                 "Entities": ["Website", "users", "solarpunk transformations", "AR technology"],
-                "What_If": "What if we could visualize and transform our cities into solarpunk utopias through technology?"
+                "What_If": "What if we could visualize and transform our cities into solarpunk utopias through technology?",
+                "Domain": "Environmental",
+                "Focus": "AR",
+                "Feasibility": "Possible",
+                "Technology": ["AR", "Image Transformation", "Web Development"]
             },
             "AI Judge in Future Legal Systems": {
                 "Speculative_World": "A future legal system where AI judges preside over trials for unbiased justice.",
@@ -269,7 +456,11 @@
                 "Logline": "An interactive mock trial with an AI judge examines the implications of AI in justice.",
                 "Topic": "AI in judiciary and the future of legal systems.",
                 "Entities": ["AI judge", "users", "legal documents", "interactive mock trials"],
-                "What_If": "What if the judiciary system employed AI judges to ensure unbiased and consistent legal decisions?"
+                "What_If": "What if the judiciary system employed AI judges to ensure unbiased and consistent legal decisions?",
+                "Domain": "Legal",
+                "Focus": "AI",
+                "Feasibility": "Possible",
+                "Technology": ["AI", "Interactive Design", "Web Development", "Data Integration"]
             },
             "Netwrkr": {
                 "Speculative_World": "A society where AI simulates social interactions to combat isolation.",
@@ -277,7 +468,11 @@
                 "Logline": "An AI-driven platform offers simulated social interactions to alleviate social isolation.",
                 "Topic": "AI in mental health and social connectivity.",
                 "Entities": ["AI profiles", "users", "chat interfaces"],
-                "What_If": "What if AI could simulate social interactions to help people overcome loneliness?"
+                "What_If": "What if AI could simulate social interactions to help people overcome loneliness?",
+                "Domain": "Mental Health",
+                "Focus": "AI",
+                "Feasibility": "Possible",
+                "Technology": ["AI", "Chatbots", "Web Development"]
             },
             "eCommerce Website for Futuristic Device": {
                 "Speculative_World": "A future where advanced AI-generated media revolutionizes product marketing.",
@@ -285,7 +480,11 @@
                 "Logline": "An eCommerce platform uses AI-generated content to showcase a futuristic device.",
                 "Topic": "AI in marketing and futuristic product promotion.",
                 "Entities": ["AI-generated media", "eCommerce platform", "futuristic device", "users"],
-                "What_If": "What if AI could create hyper-realistic media content to revolutionize how we experience online shopping?"
+                "What_If": "What if AI could create hyper-realistic media content to revolutionize how we experience online shopping?",
+                "Domain": "Technology",
+                "Focus": "AI",
+                "Feasibility": "Probable",
+                "Technology": ["AI", "Generative AI", "Web Development"]
             },
             "🌟Stella In Space🌟": {
                 "Speculative_World": "An astral civilization faces extinction due to overconsumption of their star's energy.",
@@ -293,7 +492,11 @@
                 "Logline": "As Stella, collect star pieces across planets to restore a broken star and save civilization.",
                 "Topic": "Environmental allegory through a sci-fi platformer game.",
                 "Entities": ["Stella", "broken star", "planets", "star pieces"],
-                "What_If": "What if the survival of a civilization depended on restoring their overused energy source piece by piece?"
+                "What_If": "What if the survival of a civilization depended on restoring their overused energy source piece by piece?",
+                "Domain": "Environmental",
+                "Focus": "Gaming",
+                "Feasibility": "Probable",
+                "Technology": ["3D Modeling", "Interactive Design", "Gaming"]
             },
             "Cultural Attire Social Media App": {
                 "Speculative_World": "A platform where digital overlays allow users to celebrate and explore traditional cultural attire.",
@@ -301,7 +504,11 @@
                 "Logline": "An app lets users virtually wear traditional garments, fostering cultural appreciation and connection.",
                 "Topic": "Digital engagement with cultural heritage.",
                 "Entities": ["Users", "digital traditional garments", "social media platform"],
-                "What_If": "What if technology enabled us to virtually try on and share traditional attire, enhancing cultural understanding?"
+                "What_If": "What if technology enabled us to virtually try on and share traditional attire, enhancing cultural understanding?",
+                "Domain": "Social",
+                "Focus": "Interactive",
+                "Feasibility": "Plausible",
+                "Technology": ["Web Development", "Interactive Design", "Image Transformation"]
             },
             "Augmented Reality Educational Tool": {
                 "Speculative_World": "An educational landscape enhanced by AR, making learning interactive and user-centered.",
@@ -309,7 +516,11 @@
                 "Logline": "An AR app transforms learning by bringing interactive models and tutorials into the real world.",
                 "Topic": "AR in education and skill development.",
                 "Entities": ["AR application", "users", "interactive 3D models"],
-                "What_If": "What if augmented reality could make learning new skills like origami as intuitive as having a personal tutor?"
+                "What_If": "What if augmented reality could make learning new skills like origami as intuitive as having a personal tutor?",
+                "Domain": "Education",
+                "Focus": "AR",
+                "Feasibility": "Possible",
+                "Technology": ["AR", "3D Modeling", "Interactive Design"]
             },
             "Virtually Real Coffee Shop": {
                 "Speculative_World": "A virtual space where an AI barista uncovers customer stories, blending technology and human connection.",
@@ -317,7 +528,11 @@
                 "Logline": "As an AI barista, curate drinks and delve into customers' narratives in a unique virtual coffee shop.",
                 "Topic": "AI in customer service and interactive storytelling.",
                 "Entities": ["AI barista", "customers", "virtual coffee shop", "player"],
-                "What_If": "What if AI could not only serve but also connect with customers, uncovering stories in a virtual café?"
+                "What_If": "What if AI could not only serve but also connect with customers, uncovering stories in a virtual café?",
+                "Domain": "Social",
+                "Focus": "AI",
+                "Feasibility": "Possible",
+                "Technology": ["AI", "Interactive Storytelling", "Virtual Reality"]
             },
             "Future Beauty": {
                 "Speculative_World": "Mars in 30XX, where societal norms revolve around prosthetics and conformity.",
@@ -325,7 +540,11 @@
                 "Logline": "Navigate high school on Mars, making choices that affect your stats and relationships in a society obsessed with enhancement.",
                 "Topic": "Societal norms and personal identity in a futuristic setting.",
                 "Entities": ["Protagonist", "supporting characters", "Mars society", "prosthetics"],
-                "What_If": "What if your acceptance in society depended on conforming to norms of physical enhancements?"
+                "What_If": "What if your acceptance in society depended on conforming to norms of physical enhancements?",
+                "Domain": "Social",
+                "Focus": "Interactive",
+                "Feasibility": "Possible",
+                "Technology": ["Interactive Storytelling", "Web Development", "Gaming"]
             },
             "VR Cinema": {
                 "Speculative_World": "A virtual reality cinema offering interactive experiences and AI-guided assistance.",
@@ -333,7 +552,11 @@
                 "Logline": "Immerse yourself in a VR cinema, navigating with chatbot assistance to enhance your movie-going experience.",
                 "Topic": "VR in entertainment and user experience personalization.",
                 "Entities": ["Virtual theater", "users", "chatbot assistant", "3D environment"],
-                "What_If": "What if going to the movies meant immersing yourself in a VR world with personalized AI assistance?"
+                "What_If": "What if going to the movies meant immersing yourself in a VR world with personalized AI assistance?",
+                "Domain": "Entertainment",
+                "Focus": "VR",
+                "Feasibility": "Plausible",
+                "Technology": ["VR", "AI", "Chatbots"]
             },
             "AI-Integrated Therapeutic Scenario Simulator": {
                 "Speculative_World": "A future where AI creates personalized therapeutic simulations to aid emotional healing.",
@@ -341,23 +564,34 @@
                 "Logline": "An AI tool assesses your needs to generate scenarios that help overcome traumas through interactive choices.",
                 "Topic": "AI in mental health and personalized therapy.",
                 "Entities": ["AI assessment tool", "users", "immersive scenarios", "biological data"],
-                "What_If": "What if AI could simulate personalized scenarios to help you confront and heal from emotional traumas?"
+                "What_If": "What if AI could simulate personalized scenarios to help you confront and heal from emotional traumas?",
+                "Domain": "Mental Health",
+                "Focus": "AI",
+                "Feasibility": "Possible",
+                "Technology": ["AI", "Virtual Reality", "Interactive Design", "Brain Scanning"]
             }
         };
 
-        function createProjectCards() {
+        let filteredProjects = { ...projectsData };
+
+        function createProjectCards(projects) {
             const projectsGrid = document.getElementById('projects-grid');
             const projectMenu = document.getElementById('project-menu');
             projectsGrid.innerHTML = '';
             projectMenu.innerHTML = '';
 
-            Object.entries(projectsData).forEach(([title, details]) => {
+            Object.entries(projects).forEach(([title, details]) => {
                 // Create project card
                 const cardDiv = document.createElement('div');
                 cardDiv.className = 'project-card';
                 cardDiv.innerHTML = `
                     <h3>${title}</h3>
                     <p><strong>World:</strong> ${details.Speculative_World}</p>
+                    <div class="tags">
+                        <span class="tag">${details.Domain}</span>
+                        <span class="tag">${details.Focus}</span>
+                        <span class="tag">${details.Feasibility}</span>
+                    </div>
                 `;
                 cardDiv.addEventListener('click', () => openModal(title, details));
                 projectsGrid.appendChild(cardDiv);
@@ -407,6 +641,15 @@
                     <h3>What If</h3>
                     <p>${details['What_If']}</p>
                 </div>
+                <div class="modal-section">
+                    <h3>Tags</h3>
+                    <div class="modal-tags">
+                        <span class="modal-tag">${details.Domain}</span>
+                        <span class="modal-tag">${details.Focus}</span>
+                        <span class="modal-tag">${details.Feasibility}</span>
+                        ${details.Technology.map(tech => `<span class="modal-tag">${tech}</span>`).join('')}
+                    </div>
+                </div>
             `;
 
             modal.style.display = 'flex';
@@ -417,8 +660,91 @@
             modal.style.display = 'none';
         }
 
+        function applyFilters() {
+            const domainFilter = document.getElementById('domain-filter').value;
+            const focusFilter = document.getElementById('focus-filter').value;
+            const feasibilityFilter = document.getElementById('feasibility-filter').value;
+            const technologyFilter = document.getElementById('technology-filter').value;
+
+            filteredProjects = {};
+
+            Object.entries(projectsData).forEach(([title, details]) => {
+                const domainMatch = (domainFilter === 'All') || (details.Domain === domainFilter);
+                const focusMatch = (focusFilter === 'All') || (details.Focus === focusFilter);
+                const feasibilityMatch = (feasibilityFilter === 'All') || (details.Feasibility === feasibilityFilter);
+                const technologyMatch = (technologyFilter === 'All') || (details.Technology.includes(technologyFilter));
+
+                if (domainMatch && focusMatch && feasibilityMatch && technologyMatch) {
+                    filteredProjects[title] = details;
+                }
+            });
+
+            createProjectCards(filteredProjects);
+        }
+
+        function populateFilterOptions() {
+            // Populate Domain Filter
+            const domainSet = new Set();
+            // Populate Focus Filter
+            const focusSet = new Set();
+            // Populate Feasibility Filter
+            const feasibilitySet = new Set();
+            // Populate Technology Filter
+            const technologySet = new Set();
+
+            Object.values(projectsData).forEach(details => {
+                domainSet.add(details.Domain);
+                focusSet.add(details.Focus);
+                feasibilitySet.add(details.Feasibility);
+                details.Technology.forEach(tech => technologySet.add(tech));
+            });
+
+            const domainFilter = document.getElementById('domain-filter');
+            domainSet.forEach(domain => {
+                const option = document.createElement('option');
+                option.value = domain;
+                option.textContent = domain;
+                domainFilter.appendChild(option);
+            });
+
+            const focusFilter = document.getElementById('focus-filter');
+            focusSet.forEach(focus => {
+                const option = document.createElement('option');
+                option.value = focus;
+                option.textContent = focus;
+                focusFilter.appendChild(option);
+            });
+
+            const feasibilityFilter = document.getElementById('feasibility-filter');
+            feasibilitySet.forEach(feasibility => {
+                const option = document.createElement('option');
+                option.value = feasibility;
+                option.textContent = feasibility;
+                feasibilityFilter.appendChild(option);
+            });
+
+            const technologyFilter = document.getElementById('technology-filter');
+            technologySet.forEach(tech => {
+                const option = document.createElement('option');
+                option.value = tech;
+                option.textContent = tech;
+                technologyFilter.appendChild(option);
+            });
+        }
+
+        function setupFilterListeners() {
+            document.getElementById('domain-filter').addEventListener('change', applyFilters);
+            document.getElementById('focus-filter').addEventListener('change', applyFilters);
+            document.getElementById('feasibility-filter').addEventListener('change', applyFilters);
+            document.getElementById('technology-filter').addEventListener('change', applyFilters);
+        }
+
         // Initialize
-        window.addEventListener('DOMContentLoaded', createProjectCards);
+        window.addEventListener('DOMContentLoaded', () => {
+            populateFilterOptions();
+            createProjectCards(projectsData);
+            setupFilterListeners();
+        });
     </script>
 </body>
 </html>
