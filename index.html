@@ -97,8 +97,7 @@
             font-weight: bold;
         }
 
-        .filter-group select,
-        .filter-group input[type="checkbox"] {
+        .filter-group select {
             padding: 5px;
             font-size: 14px;
         }
@@ -147,6 +146,22 @@
             padding: 3px 8px;
             border-radius: 3px;
             font-size: 12px;
+        }
+
+        /* Statistics Section */
+        .stats-section {
+            margin-top: 50px;
+        }
+
+        .stats-section h2 {
+            color: #ff4d00;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 40px;
         }
 
         /* Modal */
@@ -242,6 +257,8 @@
             }
         }
     </style>
+    <!-- Include Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <nav>
@@ -327,6 +344,23 @@
 
         <div id="projects-grid" class="projects-grid">
             <!-- Projects will be dynamically inserted here -->
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="stats-section">
+            <h2>Project Statistics</h2>
+            <div class="chart-container">
+                <canvas id="domainChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="focusChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="feasibilityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="technologyChart"></canvas>
+            </div>
         </div>
     </main>
 
@@ -574,6 +608,7 @@
 
         let filteredProjects = { ...projectsData };
 
+        // Function to create project cards
         function createProjectCards(projects) {
             const projectsGrid = document.getElementById('projects-grid');
             const projectMenu = document.getElementById('project-menu');
@@ -610,6 +645,7 @@
             });
         }
 
+        // Function to open modal with project details
         function openModal(title, details) {
             const modal = document.getElementById('project-modal');
             const modalTitle = document.getElementById('modal-title');
@@ -655,11 +691,13 @@
             modal.style.display = 'flex';
         }
 
+        // Function to close modal
         function closeModal() {
             const modal = document.getElementById('project-modal');
             modal.style.display = 'none';
         }
 
+        // Function to apply filters
         function applyFilters() {
             const domainFilter = document.getElementById('domain-filter').value;
             const focusFilter = document.getElementById('focus-filter').value;
@@ -680,58 +718,15 @@
             });
 
             createProjectCards(filteredProjects);
+            updateCharts(filteredProjects);
         }
 
+        // Function to populate filter options dynamically (optional enhancement)
         function populateFilterOptions() {
-            // Populate Domain Filter
-            const domainSet = new Set();
-            // Populate Focus Filter
-            const focusSet = new Set();
-            // Populate Feasibility Filter
-            const feasibilitySet = new Set();
-            // Populate Technology Filter
-            const technologySet = new Set();
-
-            Object.values(projectsData).forEach(details => {
-                domainSet.add(details.Domain);
-                focusSet.add(details.Focus);
-                feasibilitySet.add(details.Feasibility);
-                details.Technology.forEach(tech => technologySet.add(tech));
-            });
-
-            const domainFilter = document.getElementById('domain-filter');
-            domainSet.forEach(domain => {
-                const option = document.createElement('option');
-                option.value = domain;
-                option.textContent = domain;
-                domainFilter.appendChild(option);
-            });
-
-            const focusFilter = document.getElementById('focus-filter');
-            focusSet.forEach(focus => {
-                const option = document.createElement('option');
-                option.value = focus;
-                option.textContent = focus;
-                focusFilter.appendChild(option);
-            });
-
-            const feasibilityFilter = document.getElementById('feasibility-filter');
-            feasibilitySet.forEach(feasibility => {
-                const option = document.createElement('option');
-                option.value = feasibility;
-                option.textContent = feasibility;
-                feasibilityFilter.appendChild(option);
-            });
-
-            const technologyFilter = document.getElementById('technology-filter');
-            technologySet.forEach(tech => {
-                const option = document.createElement('option');
-                option.value = tech;
-                option.textContent = tech;
-                technologyFilter.appendChild(option);
-            });
+            // Already hardcoded in the HTML, but you can dynamically populate if needed
         }
 
+        // Function to setup filter listeners
         function setupFilterListeners() {
             document.getElementById('domain-filter').addEventListener('change', applyFilters);
             document.getElementById('focus-filter').addEventListener('change', applyFilters);
@@ -739,11 +734,403 @@
             document.getElementById('technology-filter').addEventListener('change', applyFilters);
         }
 
+        // Initialize Charts
+        let domainChart, focusChart, feasibilityChart, technologyChart;
+
+        function initializeCharts() {
+            const ctxDomain = document.getElementById('domainChart').getContext('2d');
+            const ctxFocus = document.getElementById('focusChart').getContext('2d');
+            const ctxFeasibility = document.getElementById('feasibilityChart').getContext('2d');
+            const ctxTechnology = document.getElementById('technologyChart').getContext('2d');
+
+            domainChart = new Chart(ctxDomain, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '# of Projects',
+                        data: [],
+                        backgroundColor: '#ff4d00',
+                        borderColor: '#d4c4a8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projects by Domain'
+                        }
+                    }
+                }
+            });
+
+            focusChart = new Chart(ctxFocus, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '# of Projects',
+                        data: [],
+                        backgroundColor: '#ff4d00',
+                        borderColor: '#d4c4a8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projects by Focus'
+                        }
+                    }
+                }
+            });
+
+            feasibilityChart = new Chart(ctxFeasibility, {
+                type: 'pie',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '# of Projects',
+                        data: [],
+                        backgroundColor: [
+                            '#ff4d00',
+                            '#e3d5b6',
+                            '#d4c4a8',
+                            '#a8a8a8'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projects by Feasibility'
+                        }
+                    }
+                }
+            });
+
+            technologyChart = new Chart(ctxTechnology, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '# of Projects',
+                        data: [],
+                        backgroundColor: '#ff4d00',
+                        borderColor: '#d4c4a8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projects by Technology'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to update charts based on filtered projects
+        function updateCharts(projects) {
+            // Reset data
+            domainChart.data.labels = [];
+            domainChart.data.datasets[0].data = [];
+
+            focusChart.data.labels = [];
+            focusChart.data.datasets[0].data = [];
+
+            feasibilityChart.data.labels = [];
+            feasibilityChart.data.datasets[0].data = [];
+
+            technologyChart.data.labels = [];
+            technologyChart.data.datasets[0].data = [];
+
+            // Calculate counts
+            const domainCounts = {};
+            const focusCounts = {};
+            const feasibilityCounts = {};
+            const technologyCounts = {};
+
+            Object.values(projects).forEach(details => {
+                // Domain
+                domainCounts[details.Domain] = (domainCounts[details.Domain] || 0) + 1;
+                // Focus
+                focusCounts[details.Focus] = (focusCounts[details.Focus] || 0) + 1;
+                // Feasibility
+                feasibilityCounts[details.Feasibility] = (feasibilityCounts[details.Feasibility] || 0) + 1;
+                // Technology
+                details.Technology.forEach(tech => {
+                    technologyCounts[tech] = (technologyCounts[tech] || 0) + 1;
+                });
+            });
+
+            // Update Domain Chart
+            domainChart.data.labels = Object.keys(domainCounts);
+            domainChart.data.datasets[0].data = Object.values(domainCounts);
+            domainChart.update();
+
+            // Update Focus Chart
+            focusChart.data.labels = Object.keys(focusCounts);
+            focusChart.data.datasets[0].data = Object.values(focusCounts);
+            focusChart.update();
+
+            // Update Feasibility Chart
+            feasibilityChart.data.labels = Object.keys(feasibilityCounts);
+            feasibilityChart.data.datasets[0].data = Object.values(feasibilityCounts);
+            feasibilityChart.update();
+
+            // Update Technology Chart
+            technologyChart.data.labels = Object.keys(technologyCounts);
+            technologyChart.data.datasets[0].data = Object.values(technologyCounts);
+            technologyChart.update();
+        }
+
+        // Function to perform basic bias analysis (qualitative)
+        function analyzeBiases() {
+            // Example: Overrepresentation of AI in certain domains
+            const domainFocus = {};
+            Object.values(projectsData).forEach(details => {
+                if (!domainFocus[details.Domain]) {
+                    domainFocus[details.Domain] = {};
+                }
+                domainFocus[details.Domain][details.Focus] = (domainFocus[details.Domain][details.Focus] || 0) + 1;
+            });
+
+            console.log("Bias Analysis:", domainFocus);
+            // Further analysis can be implemented as needed
+        }
+
+        // Initialize Charts
+        function initializeCharts() {
+            const ctxDomain = document.getElementById('domainChart').getContext('2d');
+            const ctxFocus = document.getElementById('focusChart').getContext('2d');
+            const ctxFeasibility = document.getElementById('feasibilityChart').getContext('2d');
+            const ctxTechnology = document.getElementById('technologyChart').getContext('2d');
+
+            domainChart = new Chart(ctxDomain, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '# of Projects',
+                        data: [],
+                        backgroundColor: '#ff4d00',
+                        borderColor: '#d4c4a8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projects by Domain'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision:0
+                            }
+                        }
+                    }
+                }
+            });
+
+            focusChart = new Chart(ctxFocus, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '# of Projects',
+                        data: [],
+                        backgroundColor: '#ff4d00',
+                        borderColor: '#d4c4a8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projects by Focus'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision:0
+                            }
+                        }
+                    }
+                }
+            });
+
+            feasibilityChart = new Chart(ctxFeasibility, {
+                type: 'pie',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '# of Projects',
+                        data: [],
+                        backgroundColor: [
+                            '#ff4d00',
+                            '#e3d5b6',
+                            '#d4c4a8',
+                            '#a8a8a8'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projects by Feasibility'
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            technologyChart = new Chart(ctxTechnology, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '# of Projects',
+                        data: [],
+                        backgroundColor: '#ff4d00',
+                        borderColor: '#d4c4a8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projects by Technology'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision:0
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to update charts based on filtered projects
+        function updateCharts(projects) {
+            // Reset data
+            domainChart.data.labels = [];
+            domainChart.data.datasets[0].data = [];
+
+            focusChart.data.labels = [];
+            focusChart.data.datasets[0].data = [];
+
+            feasibilityChart.data.labels = [];
+            feasibilityChart.data.datasets[0].data = [];
+
+            technologyChart.data.labels = [];
+            technologyChart.data.datasets[0].data = [];
+
+            // Calculate counts
+            const domainCounts = {};
+            const focusCounts = {};
+            const feasibilityCounts = {};
+            const technologyCounts = {};
+
+            Object.values(projects).forEach(details => {
+                // Domain
+                domainCounts[details.Domain] = (domainCounts[details.Domain] || 0) + 1;
+                // Focus
+                focusCounts[details.Focus] = (focusCounts[details.Focus] || 0) + 1;
+                // Feasibility
+                feasibilityCounts[details.Feasibility] = (feasibilityCounts[details.Feasibility] || 0) + 1;
+                // Technology
+                details.Technology.forEach(tech => {
+                    technologyCounts[tech] = (technologyCounts[tech] || 0) + 1;
+                });
+            });
+
+            // Update Domain Chart
+            domainChart.data.labels = Object.keys(domainCounts);
+            domainChart.data.datasets[0].data = Object.values(domainCounts);
+            domainChart.update();
+
+            // Update Focus Chart
+            focusChart.data.labels = Object.keys(focusCounts);
+            focusChart.data.datasets[0].data = Object.values(focusCounts);
+            focusChart.update();
+
+            // Update Feasibility Chart
+            feasibilityChart.data.labels = Object.keys(feasibilityCounts);
+            feasibilityChart.data.datasets[0].data = Object.values(feasibilityCounts);
+            feasibilityChart.update();
+
+            // Update Technology Chart
+            // Limit to top 10 technologies for clarity
+            const sortedTechnologies = Object.entries(technologyCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+            technologyChart.data.labels = sortedTechnologies.map(item => item[0]);
+            technologyChart.data.datasets[0].data = sortedTechnologies.map(item => item[1]);
+            technologyChart.update();
+        }
+
+        // Function to perform basic bias analysis (qualitative)
+        function analyzeBiases() {
+            // Example: Overrepresentation of AI in certain domains
+            const domainFocus = {};
+            Object.values(projectsData).forEach(details => {
+                if (!domainFocus[details.Domain]) {
+                    domainFocus[details.Domain] = {};
+                }
+                domainFocus[details.Domain][details.Focus] = (domainFocus[details.Domain][details.Focus] || 0) + 1;
+            });
+
+            console.log("Bias Analysis:", domainFocus);
+            // Further analysis can be implemented as needed
+        }
+
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
-            populateFilterOptions();
+            initializeCharts();
             createProjectCards(projectsData);
+            updateCharts(projectsData);
             setupFilterListeners();
+            analyzeBiases();
         });
     </script>
 </body>
